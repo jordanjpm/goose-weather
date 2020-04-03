@@ -18,7 +18,7 @@ export class WeatherService {
 
   constructor(private http: HttpClient) { }
 
-  getWeather(locationData: LocationData): Observable<any> {
+  getWeather(locationData: LocationData): Observable<WeatherData> {
     return this.getNoaaMetadata(locationData.latitude, locationData.longitude)
       .pipe(
         mergeMap( metadata => this.getNoaaWeeklyForecast(metadata.properties.forecast)

@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { map, startWith, take } from 'rxjs/operators';
 import { Breakpoints, BreakpointObserver } from '@angular/cdk/layout';
-import { WeatherService } from '../services/weather.service';
 import { WeatherData } from '../models/weather-data/weather-data';
 import { CurrentConditionsComponent } from '../cards/current-conditions/current-conditions.component';
 import { WeatherDiscussionComponent } from '../cards/weather-discussion/weather-discussion.component';
@@ -15,6 +14,10 @@ import * as USCities from '../../assets/us_cities.json';
 import { City } from '../models/city/city';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { FormControl } from '@angular/forms';
+import { Store, select } from '@ngrx/store';
+import { AppState, selectLocationError } from '../reducers';
+import * as fromLocationActions from '../actions/location.actions';
+import * as fromWeatherActions from '../actions/weather.actions';
 
 @Component({
   selector: 'app-weather',
@@ -24,6 +27,8 @@ import { FormControl } from '@angular/forms';
 export class WeatherComponent implements OnInit {
 
   weatherData: WeatherData;
+  error$: Observable<any>;
+
   lat: string;
   long: string;
   cardsDesktop = [];
@@ -47,7 +52,7 @@ export class WeatherComponent implements OnInit {
     })
   );
 
-  constructor(private breakpointObserver: BreakpointObserver, public weatherService: WeatherService) {
+  constructor(private breakpointObserver: BreakpointObserver, private store: Store<AppState>) {
     // desktop view
     this.cardsDesktop = [
       {
@@ -142,10 +147,10 @@ export class WeatherComponent implements OnInit {
     });
 
     this.filteredCities = this.citiesCtrl.valueChanges
-    .pipe(
-      startWith(''),
-      map(city => city ? this._filterCities(city) : this.cities.slice())
-    );
+      .pipe(
+        startWith(''),
+        map(city => city ? this._filterCities(city) : this.cities.slice())
+      );
   }
 
   private _filterCities(value: string): City[] {
@@ -155,8 +160,10 @@ export class WeatherComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.error$ = this.store.pipe(select(selectLocationError));
     try {
       navigator.geolocation.getCurrentPosition((position) => {
+        console.log("Position: aquired")
         this.savePosition(position);
       });
     } catch (error) {
@@ -164,7 +171,7 @@ export class WeatherComponent implements OnInit {
     }
   }
 
-  savePosition(position) {
+  savePosition(position: Position) {
     this.locationData.latitude = position.coords.latitude.toFixed(4).toString();
     this.locationData.longitude = position.coords.longitude.toFixed(4).toString();
     for (const city of this.cities) {
@@ -173,24 +180,28 @@ export class WeatherComponent implements OnInit {
         city.longitude = this.locationData.longitude;
       }
     }
-
-    this.weatherService.getWeather(this.locationData)
-      .pipe(take(1))
-      .subscribe(weather => this.weatherData = weather);
+    console.log("Location saved: " + JSON.stringify(this.locationData))
+    this.store.dispatch(fromLocationActions.loadLocationsSuccess({ data: this.locationData }));
   }
 
   onSelectionChanged(event: MatAutocompleteSelectedEvent) {
     for (const city of this.cities) {
       if (city.combinedName === event.option.value) {
-        this.locationData.latitude = city.latitude;
-        this.locationData.longitude = city.longitude;
-        this.weatherData = null;
-        this.weatherService.getWeather(this.locationData)
-          .pipe(take(1))
-          .subscribe(weather => this.weatherData = weather);
+        const latitude = parseFloat(city.latitude).toFixed(4).toString();
+        const longitude = parseFloat(city.longitude).toFixed(4).toString();
 
+        let locationData: LocationData = new LocationData();
+        locationData.latitude = latitude;
+        locationData.longitude = longitude;
+        console.log("Location changed: " + JSON.stringify(this.locationData))
+
+        this.locationData = locationData;
+
+        //this.store.dispatch(fromWeatherActions.loadWeathersSuccess({ data: null }));
+        this.store.dispatch(fromLocationActions.loadLocationsSuccess({ data: this.locationData }));
         break;
       }
     }
   }
+
 }

@@ -10,11 +10,11 @@ import { HourlyForecastComponent } from '../cards/hourly-forecast/hourly-forecas
 import { AboutDesktopComponent } from '../cards/about-desktop/about-desktop.component';
 import { AboutMobileComponent } from '../cards/about-mobile/about-mobile.component';
 import { LocationData } from '../models/location-data/location-data';
-import { FormControl } from '@angular/forms';
 import { Observable } from 'rxjs';
-import { MatAutocompleteSelectedEvent } from '@angular/material';
 import * as USCities from '../../assets/us_cities.json';
 import { City } from '../models/city/city';
+import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
+import { FormControl } from '@angular/forms';
 
 @Component({
   selector: 'app-weather',

@@ -1,5 +1,9 @@
-<div *ngIf="error$ | async as error">
-  <h1 class="error-message"><mat-icon>error</mat-icon> {{ error }}</h1>
+<div *ngIf="locationError$ | async as locationError">
+  <h1 class="error-message"><mat-icon>error</mat-icon> {{ locationError }}</h1>
+</div>
+<div *ngIf="locationData$ | async as locationData">
+    <p>Latitude: {{locationData.latitude}}</p>
+    <p>Longitude: {{locationData.longitude}}</p>
 </div>
 <mat-toolbar color="primary">
   <mat-toolbar-row>

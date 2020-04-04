@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { map, startWith, take } from 'rxjs/operators';
+import { map, startWith } from 'rxjs/operators';
 import { Breakpoints, BreakpointObserver } from '@angular/cdk/layout';
 import { CurrentConditionsComponent } from '../cards/current-conditions/current-conditions.component';
 import { WeatherDiscussionComponent } from '../cards/weather-discussion/weather-discussion.component';
@@ -12,9 +12,10 @@ import { City } from '../models/city/city';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { FormControl } from '@angular/forms';
 import { Store, select } from '@ngrx/store';
-import { AppState, selectLocationError } from '../reducers';
+import { AppState } from '../reducers';
 import * as fromLocationActions from '../actions/location.actions';
 import * as fromWeatherActions from '../actions/weather.actions';
+import { selectLocationError, selectLocationData } from '../selectors/location.selector';
 
 @Component({
   selector: 'app-weather',
@@ -23,7 +24,8 @@ import * as fromWeatherActions from '../actions/weather.actions';
 })
 export class WeatherComponent implements OnInit {
 
-  error$: Observable<any>;
+  locationError$: Observable<any>;
+  locationData$: Observable<LocationData>;
 
   lat: string;
   long: string;
@@ -143,10 +145,11 @@ export class WeatherComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.error$ = this.store.pipe(select(selectLocationError)).pipe(map(state => state.error));
+    this.locationData$ = this.store.pipe(select(selectLocationData));
+    this.locationError$ = this.store.pipe(select(selectLocationError));
+
     try {
       navigator.geolocation.getCurrentPosition((position) => {
-        console.log("Position: aquired")
         this.savePosition(position);
       });
     } catch (error) {
@@ -177,7 +180,6 @@ export class WeatherComponent implements OnInit {
         locationData.latitude = latitude;
         locationData.longitude = longitude;
 
-        this.store.dispatch(fromWeatherActions.loadWeathersSuccess({ data: null }));
         this.store.dispatch(fromLocationActions.loadLocationsSuccess({ data: locationData }));
         break;
       }

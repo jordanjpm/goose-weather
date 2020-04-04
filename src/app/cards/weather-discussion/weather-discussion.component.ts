@@ -1,9 +1,9 @@
-import { Component, OnInit, Input } from '@angular/core';
-import { WeatherData } from 'src/app/models/weather-data/weather-data';
-import { Observable } from 'rxjs';
+import { Component, OnInit } from '@angular/core';
 import { Store, select } from '@ngrx/store';
-import { AppState, selectWeatherData } from 'src/app/reducers';
-import { map } from 'rxjs/operators';
+import { Observable } from 'rxjs';
+import { WeatherData } from 'src/app/models/weather-data/weather-data';
+import { AppState } from 'src/app/reducers';
+import { selectWeatherData } from 'src/app/selectors/weather.selector';
 
 @Component({
   selector: 'app-weather-discussion',
@@ -17,7 +17,7 @@ export class WeatherDiscussionComponent implements OnInit {
   constructor(private store: Store<AppState>) { }
 
   ngOnInit(): void {
-    this.data$ = this.store.pipe(select(selectWeatherData)).pipe(map(state => state.weatherData));
+    this.data$ = this.store.pipe(select(selectWeatherData));
   }
 
 }

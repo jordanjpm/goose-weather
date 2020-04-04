@@ -58,6 +58,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
       runtimeChecks: {
         strictStateImmutability: true,
         strictActionImmutability: true,
+        // strictStateSerializability: true,
+        // strictActionSerializability: true
       }
     }),
     !environment.production ? StoreDevtoolsModule.instrument() : [],

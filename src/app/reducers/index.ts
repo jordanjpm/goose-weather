@@ -13,16 +13,4 @@ export const reducers: ActionReducerMap<AppState> = {
   location: fromLocationReducers.reducer
 };
 
-export const selectWeatherData = createFeatureSelector<fromWeatherReducers.WeatherState>(
-  fromWeatherReducers.weatherFeatureKey
-);
-
-export const selectLocationData = createFeatureSelector<fromLocationReducers.LocationState>(
-  fromWeatherReducers.weatherFeatureKey
-);
-
-export const selectLocationError = createFeatureSelector<fromLocationReducers.LocationState>(
-  fromLocationReducers.locationFeatureKey
-);
-
 export const metaReducers: MetaReducer<any>[] = !environment.production ? [] : [];

@@ -49,7 +49,6 @@ export class WeatherComponent implements OnInit {
   );
 
   constructor(private breakpointObserver: BreakpointObserver, private store: Store<AppState>) {
-    this.locationError$ = this.store.pipe(select(selectLocationError));
     // desktop view
     this.cardsDesktop = [
       {
@@ -145,6 +144,7 @@ export class WeatherComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.locationError$ = this.store.pipe(select(selectLocationError));
     try {
       navigator.geolocation.getCurrentPosition((position) => {
         this.savePosition(position);

@@ -15,6 +15,7 @@ import { Store, select } from '@ngrx/store';
 import { AppState } from '../reducers';
 import * as fromLocationActions from '../actions/location.actions';
 import { selectLocationError } from '../selectors/location.selector';
+import * as fromWeatherActions from '../actions/weather.actions';
 
 @Component({
   selector: 'app-weather',
@@ -177,6 +178,7 @@ export class WeatherComponent implements OnInit {
         locationData.latitude = latitude;
         locationData.longitude = longitude;
 
+        this.store.dispatch(fromWeatherActions.loadWeathersSuccess({ data: null }));
         this.store.dispatch(fromLocationActions.loadLocationsSuccess({ data: locationData }));
         break;
       }

@@ -14,8 +14,7 @@ import { FormControl } from '@angular/forms';
 import { Store, select } from '@ngrx/store';
 import { AppState } from '../reducers';
 import * as fromLocationActions from '../actions/location.actions';
-import * as fromWeatherActions from '../actions/weather.actions';
-import { selectLocationError, selectLocationData } from '../selectors/location.selector';
+import { selectLocationError } from '../selectors/location.selector';
 
 @Component({
   selector: 'app-weather',
@@ -50,6 +49,7 @@ export class WeatherComponent implements OnInit {
   );
 
   constructor(private breakpointObserver: BreakpointObserver, private store: Store<AppState>) {
+    this.locationError$ = this.store.pipe(select(selectLocationError));
     // desktop view
     this.cardsDesktop = [
       {
@@ -145,9 +145,6 @@ export class WeatherComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.locationData$ = this.store.pipe(select(selectLocationData));
-    this.locationError$ = this.store.pipe(select(selectLocationError));
-
     try {
       navigator.geolocation.getCurrentPosition((position) => {
         this.savePosition(position);

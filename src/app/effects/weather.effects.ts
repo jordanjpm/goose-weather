@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Actions, ofType, createEffect } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
-import { of } from 'rxjs';
-import { map, catchError, switchMap, mergeMap } from 'rxjs/operators';
+import { of, EMPTY } from 'rxjs';
+import { map, catchError, switchMap, mergeMap, concatMap } from 'rxjs/operators';
 import * as fromLocationActions from '../actions/location.actions';
 import * as fromWeatherActions from '../actions/weather.actions';
 import { AppState } from '../reducers';

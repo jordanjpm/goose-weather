@@ -5,5 +5,9 @@ import { AppState } from '../reducers';
 export const selectWeather = createFeatureSelector<AppState, fromWeatherReducers.WeatherState>(fromWeatherReducers.weatherFeatureKey);
 
 export const selectWeatherData = createSelector(selectWeather,
-  (state: fromWeatherReducers.WeatherState) => state.weatherData
+  (state: fromWeatherReducers.WeatherState) => {
+    if (state)
+      return state.weatherData
+    return null;
+  }
 );

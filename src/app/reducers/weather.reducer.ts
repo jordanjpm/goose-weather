@@ -16,7 +16,13 @@ const weatherReducer = createReducer(
   initialWeatherState,
   on(fromWeatherActions.loadWeathers, state => state),
   on(fromWeatherActions.loadWeathersFailure, (state, action) => state),
-  on(fromWeatherActions.loadWeathersSuccess, (state, action) => state)
+  on(fromWeatherActions.loadWeathersSuccess, (state, action) => {
+    let tempState: WeatherState;
+    if (action && action.data) {
+      tempState = { weatherData: action.data };
+    }
+    return tempState;
+  })
 );
 
 export function reducer(state: WeatherState | undefined, action: Action) {

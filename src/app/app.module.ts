@@ -23,6 +23,7 @@ import { environment } from '../environments/environment';
 import { EffectsModule } from '@ngrx/effects';
 import { WeatherEffects } from './effects/weather.effects';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { TestEffects } from './feature/test.effects';
 
 @NgModule({
   declarations: [

@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  openWeatherMapAPIKey: 'OPEN_WEATHER_MAP_API_KEY',
+  openWeatherMapAPIKey: '$OPEN_WEATHER_MAP_API_KEY',
   noaaMetaDataEndpoint: 'https://api.weather.gov/points/'
 };
 

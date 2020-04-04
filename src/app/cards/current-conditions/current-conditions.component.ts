@@ -1,6 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { WeatherData } from 'src/app/models/weather-data/weather-data';
 import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { Store, select } from '@ngrx/store';
 import { AppState, selectWeatherData } from 'src/app/reducers';
 
@@ -16,7 +17,7 @@ export class CurrentConditionsComponent implements OnInit {
   constructor(private store: Store<AppState>) { }
 
   ngOnInit(): void {
-    this.data$ = this.store.pipe(select(selectWeatherData));
+    this.data$ = this.store.pipe(select(selectWeatherData)).pipe(map(state => state.weatherData));
   }
 
 }

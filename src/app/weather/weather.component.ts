@@ -1,13 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { map, startWith, take } from 'rxjs/operators';
 import { Breakpoints, BreakpointObserver } from '@angular/cdk/layout';
-import { WeatherData } from '../models/weather-data/weather-data';
 import { CurrentConditionsComponent } from '../cards/current-conditions/current-conditions.component';
 import { WeatherDiscussionComponent } from '../cards/weather-discussion/weather-discussion.component';
 import { WeeklyForecastComponent } from '../cards/weekly-forecast/weekly-forecast.component';
 import { HourlyForecastComponent } from '../cards/hourly-forecast/hourly-forecast.component';
-import { AboutDesktopComponent } from '../cards/about-desktop/about-desktop.component';
-import { AboutMobileComponent } from '../cards/about-mobile/about-mobile.component';
 import { LocationData } from '../models/location-data/location-data';
 import { Observable } from 'rxjs';
 import * as USCities from '../../assets/us_cities.json';
@@ -26,7 +23,6 @@ import * as fromWeatherActions from '../actions/weather.actions';
 })
 export class WeatherComponent implements OnInit {
 
-  weatherData: WeatherData;
   error$: Observable<any>;
 
   lat: string;
@@ -36,7 +32,6 @@ export class WeatherComponent implements OnInit {
   displayValues = false;
   spinnerColor = 'primary';
   spinnerSize = 8;
-  locationData: LocationData = new LocationData();
   citiesCtrl = new FormControl();
   filteredCities: Observable<City[]>;
   cities = [];
@@ -78,12 +73,6 @@ export class WeatherComponent implements OnInit {
         cols: 2,
         rows: 1,
         component: WeeklyForecastComponent
-      },
-      {
-        title: 'About',
-        cols: 3,
-        rows: 1,
-        component: AboutDesktopComponent
       }
     ];
 
@@ -112,12 +101,6 @@ export class WeatherComponent implements OnInit {
         cols: 3,
         rows: 1,
         component: WeeklyForecastComponent
-      },
-      {
-        title: 'About',
-        cols: 3,
-        rows: 2,
-        component: AboutMobileComponent
       }
     ];
 
@@ -160,7 +143,7 @@ export class WeatherComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.error$ = this.store.pipe(select(selectLocationError));
+    this.error$ = this.store.pipe(select(selectLocationError)).pipe(map(state => state.error));
     try {
       navigator.geolocation.getCurrentPosition((position) => {
         console.log("Position: aquired")
@@ -172,16 +155,16 @@ export class WeatherComponent implements OnInit {
   }
 
   savePosition(position: Position) {
-    this.locationData.latitude = position.coords.latitude.toFixed(4).toString();
-    this.locationData.longitude = position.coords.longitude.toFixed(4).toString();
+    let locationData: LocationData = new LocationData();
+    locationData.latitude = position.coords.latitude.toFixed(4).toString();
+    locationData.longitude = position.coords.longitude.toFixed(4).toString();
     for (const city of this.cities) {
       if (city.combinedName === '(your location)') {
-        city.latitude = this.locationData.latitude;
-        city.longitude = this.locationData.longitude;
+        city.latitude = locationData.latitude;
+        city.longitude = locationData.longitude;
       }
     }
-    console.log("Location saved: " + JSON.stringify(this.locationData))
-    this.store.dispatch(fromLocationActions.loadLocationsSuccess({ data: this.locationData }));
+    this.store.dispatch(fromLocationActions.loadLocationsSuccess({ data: locationData }));
   }
 
   onSelectionChanged(event: MatAutocompleteSelectedEvent) {
@@ -193,12 +176,9 @@ export class WeatherComponent implements OnInit {
         let locationData: LocationData = new LocationData();
         locationData.latitude = latitude;
         locationData.longitude = longitude;
-        console.log("Location changed: " + JSON.stringify(this.locationData))
 
-        this.locationData = locationData;
-
-        //this.store.dispatch(fromWeatherActions.loadWeathersSuccess({ data: null }));
-        this.store.dispatch(fromLocationActions.loadLocationsSuccess({ data: this.locationData }));
+        this.store.dispatch(fromWeatherActions.loadWeathersSuccess({ data: null }));
+        this.store.dispatch(fromLocationActions.loadLocationsSuccess({ data: locationData }));
         break;
       }
     }

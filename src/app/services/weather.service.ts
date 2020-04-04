@@ -14,51 +14,47 @@ import { LocationData } from '../models/location-data/location-data';
 })
 export class WeatherService {
 
-  weatherData: WeatherData = new WeatherData();
-
   constructor(private http: HttpClient) { }
 
   getWeather(locationData: LocationData): Observable<WeatherData> {
-    return this.getNoaaMetadata(locationData.latitude, locationData.longitude)
-      .pipe(
-        mergeMap( metadata => this.getNoaaWeeklyForecast(metadata.properties.forecast)
-          .pipe(
-            mergeMap( weeklyForecast => this.getNoaaHourlyForecast(metadata.properties.forecastHourly)
-              .pipe(
-                mergeMap( hourlyForecast => this.getCurrentWeatherOpenWeatherMapAPI(locationData.latitude, locationData.longitude)
-                  .pipe(
-                    map((currentWeather) => {
-                      // metadata
-                      this.weatherData.currentConditions.latitude = locationData.latitude;
-                      this.weatherData.currentConditions.longitude = locationData.longitude;
-                      this.weatherData.currentConditions.city = metadata.properties.relativeLocation.properties.city;
-                      this.weatherData.currentConditions.state = metadata.properties.relativeLocation.properties.state;
-                      this.weatherData.NoaaWeeklyForecastUrl = metadata.properties.forecast;
-                      this.weatherData.NoaaHourlyForecastUrl = metadata.properties.forecastHourly;
+    return this.getNoaaMetadata(locationData.latitude, locationData.longitude).pipe(
+      mergeMap(metadata => this.getNoaaWeeklyForecast(metadata.properties.forecast).pipe(
+        mergeMap(weeklyForecast => this.getNoaaHourlyForecast(metadata.properties.forecastHourly).pipe(
+          mergeMap(hourlyForecast => this.getCurrentWeatherOpenWeatherMapAPI(locationData.latitude, locationData.longitude).pipe(
+            map((currentWeather) => {
+              let weatherData: WeatherData = new WeatherData();
 
-                      // weekly forecast
-                      this.weatherData.weeklyForecast = this.createWeeklyForecastFromNoaaData(weeklyForecast.properties.periods);
+              // metadata
+              weatherData.currentConditions.latitude = locationData.latitude;
+              weatherData.currentConditions.longitude = locationData.longitude;
+              weatherData.currentConditions.city = metadata.properties.relativeLocation.properties.city;
+              weatherData.currentConditions.state = metadata.properties.relativeLocation.properties.state;
+              weatherData.NoaaWeeklyForecastUrl = metadata.properties.forecast;
+              weatherData.NoaaHourlyForecastUrl = metadata.properties.forecastHourly;
 
-                      // hourly forecast
-                      this.weatherData.hourlyForecast = this.createHourlyForecastFromNoaaData(hourlyForecast.properties.periods);
+              // weekly forecast
+              weatherData.weeklyForecast = this.createWeeklyForecastFromNoaaData(weeklyForecast.properties.periods);
 
-                      // current conditions
-                      this.weatherData.currentConditions.temp = String(Math.ceil(currentWeather.main.temp));
-                      this.weatherData.currentConditions.description = currentWeather.weather[0].description;
-                      this.weatherData.currentConditions.sunrise = this.createDateFromMillseconds(currentWeather.sys.sunrise);
-                      this.weatherData.currentConditions.sunset = this.createDateFromMillseconds(currentWeather.sys.sunset);
-                      this.weatherData.currentConditions.icon = this.selectCurrentConditionsIcon(currentWeather.weather[0].icon);
-                      this.weatherData.currentConditions.windSpeed = currentWeather.wind.speed;
-                      this.weatherData.currentConditions.windDirection = this.getWindDirectionFromDegreeAngle(currentWeather.wind.deg);
+              // hourly forecast
+              weatherData.hourlyForecast = this.createHourlyForecastFromNoaaData(hourlyForecast.properties.periods);
 
-                      // save time that the weather was retrieved
-                      this.weatherData.weatherDate = new Date();
+              // current conditions
+              weatherData.currentConditions.temp = String(Math.ceil(currentWeather.main.temp));
+              weatherData.currentConditions.description = currentWeather.weather[0].description;
+              weatherData.currentConditions.sunrise = this.createDateFromMillseconds(currentWeather.sys.sunrise);
+              weatherData.currentConditions.sunset = this.createDateFromMillseconds(currentWeather.sys.sunset);
+              weatherData.currentConditions.icon = this.selectCurrentConditionsIcon(currentWeather.weather[0].icon);
+              weatherData.currentConditions.windSpeed = currentWeather.wind.speed;
+              weatherData.currentConditions.windDirection = this.getWindDirectionFromDegreeAngle(currentWeather.wind.deg);
 
-                      return this.weatherData;
-                    }))
-                ))
-            ))
-        ));
+              // save time that the weather was retrieved
+              weatherData.weatherDate = new Date();
+
+              return weatherData;
+            }))
+          ))
+        ))
+      ));
   }
 
   getWeatherLocalStorage(): Observable<WeatherData> {
@@ -282,7 +278,7 @@ export class WeatherService {
   }
 
   createWeeklyForecastFromNoaaData(periods: any): WeeklyForecast[] {
-    const weeklyForecastTotal =  [];
+    const weeklyForecastTotal = [];
 
     for (const period of periods) {
       const weeklyForecast = new WeeklyForecast();
@@ -301,7 +297,7 @@ export class WeatherService {
   }
 
   createHourlyForecastFromNoaaData(periods: any): HourlyForecast[] {
-    const hourlyForecastTotal =  [];
+    const hourlyForecastTotal = [];
     let counter = 0;
     for (const period of periods) {
       if (counter === 12) {

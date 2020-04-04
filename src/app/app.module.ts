@@ -11,8 +11,6 @@ import { WeatherDiscussionComponent } from './cards/weather-discussion/weather-d
 import { HttpClientModule } from '@angular/common/http';
 import { WeeklyForecastComponent } from './cards/weekly-forecast/weekly-forecast.component';
 import { HourlyForecastComponent } from './cards/hourly-forecast/hourly-forecast.component';
-import { AboutMobileComponent } from './cards/about-mobile/about-mobile.component';
-import { AboutDesktopComponent } from './cards/about-desktop/about-desktop.component';
 import { NgxdModule } from '@ngxd/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatTableModule } from '@angular/material/table';
@@ -35,16 +33,12 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     WeatherDiscussionComponent,
     WeeklyForecastComponent,
     HourlyForecastComponent,
-    AboutMobileComponent,
-    AboutDesktopComponent
   ],
   entryComponents: [
     CurrentConditionsComponent,
     WeatherDiscussionComponent,
     WeeklyForecastComponent,
     HourlyForecastComponent,
-    AboutDesktopComponent,
-    AboutMobileComponent
   ],
   imports: [
     BrowserModule,
@@ -67,7 +61,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
       }
     }),
     !environment.production ? StoreDevtoolsModule.instrument() : [],
-    EffectsModule.forRoot([WeatherEffects]),
+    EffectsModule.forRoot([WeatherEffects])
   ],
   providers: [],
   bootstrap: [AppComponent]

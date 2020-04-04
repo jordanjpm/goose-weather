@@ -1,4 +1,4 @@
-import { ActionReducerMap, MetaReducer, Action } from '@ngrx/store';
+import { ActionReducerMap, MetaReducer, Action, createFeatureSelector } from '@ngrx/store';
 import { environment } from '../../environments/environment';
 import * as fromLocationReducers from './location.reducer';
 import * as fromWeatherReducers from './weather.reducer';
@@ -13,9 +13,16 @@ export const reducers: ActionReducerMap<AppState> = {
   location: fromLocationReducers.reducer
 };
 
-export const selectWeatherData = (state: AppState) => state.weather.weatherData;
+export const selectWeatherData = createFeatureSelector<fromWeatherReducers.WeatherState>(
+  fromWeatherReducers.weatherFeatureKey
+);
 
-export const selectLocationData = (state: AppState) => state.location.location;
-export const selectLocationError = (state: AppState) => state.location.error;
+export const selectLocationData = createFeatureSelector<fromLocationReducers.LocationState>(
+  fromWeatherReducers.weatherFeatureKey
+);
+
+export const selectLocationError = createFeatureSelector<fromLocationReducers.LocationState>(
+  fromLocationReducers.locationFeatureKey
+);
 
 export const metaReducers: MetaReducer<any>[] = !environment.production ? [] : [];

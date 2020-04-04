@@ -3,6 +3,7 @@ import { WeatherData } from 'src/app/models/weather-data/weather-data';
 import { Observable } from 'rxjs';
 import { Store, select } from '@ngrx/store';
 import { selectWeatherData, AppState } from 'src/app/reducers';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-weekly-forecast',
@@ -16,7 +17,7 @@ export class WeeklyForecastComponent implements OnInit {
   constructor(private store: Store<AppState>) { }
 
   ngOnInit(): void {
-    this.data$ = this.store.pipe(select(selectWeatherData));
+    this.data$ = this.store.pipe(select(selectWeatherData)).pipe(map(state => state.weatherData));
   }
 
 }

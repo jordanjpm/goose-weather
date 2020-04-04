@@ -14,8 +14,12 @@ import { FormControl } from '@angular/forms';
 import { Store, select } from '@ngrx/store';
 import { AppState } from '../store/reducers';
 import * as fromLocationActions from '../store/actions/location.actions';
-import { selectLocationError } from '../store/selectors/location.selector';
 import * as fromWeatherActions from '../store/actions/weather.actions';
+import { selectLocationError } from '../store/selectors/location.selector';
+import { selectWeatherError } from '../store/selectors/weather.selector';
+
+// constant
+const homeCityName = '(your location)';
 
 @Component({
   selector: 'app-weather',
@@ -25,7 +29,7 @@ import * as fromWeatherActions from '../store/actions/weather.actions';
 export class WeatherComponent implements OnInit {
 
   locationError$: Observable<any>;
-  locationData$: Observable<LocationData>;
+  weatherError$: Observable<any>;
 
   lat: string;
   long: string;
@@ -36,7 +40,7 @@ export class WeatherComponent implements OnInit {
   spinnerSize = 8;
   citiesCtrl = new FormControl();
   filteredCities: Observable<City[]>;
-  cities = [];
+  cities: City[] = [];
   selectedLocation = '';
 
   cards = this.breakpointObserver.observe(Breakpoints.Handset).pipe(
@@ -112,7 +116,7 @@ export class WeatherComponent implements OnInit {
       state: '',
       latitude: '',
       longitude: '',
-      combinedName: '(your location)'
+      combinedName: homeCityName
     };
     this.cities.push(homeCity);
 
@@ -146,43 +150,38 @@ export class WeatherComponent implements OnInit {
 
   ngOnInit(): void {
     this.locationError$ = this.store.pipe(select(selectLocationError));
+    this.weatherError$ = this.store.pipe(select(selectWeatherError));
     try {
       navigator.geolocation.getCurrentPosition((position) => {
-        this.savePosition(position);
+        this.saveCurrentPosition(position);
       });
     } catch (error) {
-      alert('Browser does not support location services');
+      const msg = 'Browser does not support location services, please select location.';
+      this.store.dispatch(fromLocationActions.loadLocationsFailure({ error: msg }));
     }
   }
 
-  savePosition(position: Position) {
+  saveCurrentPosition(position: Position) {
+    const homeCity = this.cities.find(c => c.combinedName === homeCityName);
+    homeCity.latitude = position.coords.latitude.toString();
+    homeCity.longitude = position.coords.longitude.toString();
+
     const locationData: LocationData = new LocationData();
-    locationData.latitude = position.coords.latitude.toFixed(4).toString();
-    locationData.longitude = position.coords.longitude.toFixed(4).toString();
-    for (const city of this.cities) {
-      if (city.combinedName === '(your location)') {
-        city.latitude = locationData.latitude;
-        city.longitude = locationData.longitude;
-      }
-    }
+    locationData.latitude = parseFloat(homeCity.latitude).toFixed(4).toString();
+    locationData.longitude = parseFloat(homeCity.longitude).toFixed(4).toString();
+
     this.store.dispatch(fromLocationActions.loadLocationsSuccess({ data: locationData }));
   }
 
   onSelectionChanged(event: MatAutocompleteSelectedEvent) {
-    for (const city of this.cities) {
-      if (city.combinedName === event.option.value) {
-        const latitude = parseFloat(city.latitude).toFixed(4).toString();
-        const longitude = parseFloat(city.longitude).toFixed(4).toString();
+    const selectedCity = this.cities.find(c => c.combinedName === event.option.value);
 
-        const locationData: LocationData = new LocationData();
-        locationData.latitude = latitude;
-        locationData.longitude = longitude;
+    const locationData: LocationData = new LocationData();
+    locationData.latitude = parseFloat(selectedCity.latitude).toFixed(4).toString();
+    locationData.longitude = parseFloat(selectedCity.longitude).toFixed(4).toString();
 
-        this.store.dispatch(fromWeatherActions.loadWeathersSuccess({ data: null }));
-        this.store.dispatch(fromLocationActions.loadLocationsSuccess({ data: locationData }));
-        break;
-      }
-    }
+    this.store.dispatch(fromWeatherActions.loadWeathersSuccess({ data: null }));
+    this.store.dispatch(fromLocationActions.loadLocationsSuccess({ data: locationData }));
   }
 
 }

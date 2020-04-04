@@ -7,3 +7,7 @@ export const selectWeather = createFeatureSelector<AppState, fromWeatherReducers
 export const selectWeatherData = createSelector(selectWeather,
   (state: fromWeatherReducers.WeatherState) => state.weatherData
 );
+
+export const selectWeatherError = createSelector(selectWeather,
+  (state: fromWeatherReducers.WeatherState) => state.error
+);

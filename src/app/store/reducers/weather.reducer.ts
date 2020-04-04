@@ -6,18 +6,26 @@ export const weatherFeatureKey = 'weather';
 
 export interface WeatherState {
   weatherData: WeatherData | null;
+  error: string | null;
 }
 
 const initialWeatherState: WeatherState = {
-  weatherData: null
+  weatherData: null,
+  error: null
 };
 
 const weatherReducer = createReducer(
   initialWeatherState,
   on(fromWeatherActions.loadWeathers, state => state),
-  on(fromWeatherActions.loadWeathersFailure, (state, action) => state),
+  on(fromWeatherActions.loadWeathersFailure, (state, action) => {
+    return {
+      error: action ? action.error : null,
+      weatherData: null,
+    };
+  }),
   on(fromWeatherActions.loadWeathersSuccess, (state, action) => {
     return {
+      error: null,
       weatherData: action ? action.data : null,
     };
   })

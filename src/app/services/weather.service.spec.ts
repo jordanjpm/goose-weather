@@ -24,12 +24,12 @@ describe('WeatherService', () => {
       ]
     });
 
-    httpClient = TestBed.get(HttpClient);
-    httpTestingController = TestBed.get(HttpTestingController);
+    httpClient = TestBed.inject(HttpClient);
+    httpTestingController = TestBed.inject(HttpTestingController);
   });
 
   it('should be created', () => {
-    const service: WeatherService = TestBed.get(WeatherService);
+    const service: WeatherService = TestBed.inject(WeatherService);
     expect(service).toBeTruthy();
   });
 

@@ -155,7 +155,7 @@ export class WeatherComponent implements OnInit {
   }
 
   savePosition(position: Position) {
-    let locationData: LocationData = new LocationData();
+    const locationData: LocationData = new LocationData();
     locationData.latitude = position.coords.latitude.toFixed(4).toString();
     locationData.longitude = position.coords.longitude.toFixed(4).toString();
     for (const city of this.cities) {
@@ -173,7 +173,7 @@ export class WeatherComponent implements OnInit {
         const latitude = parseFloat(city.latitude).toFixed(4).toString();
         const longitude = parseFloat(city.longitude).toFixed(4).toString();
 
-        let locationData: LocationData = new LocationData();
+        const locationData: LocationData = new LocationData();
         locationData.latitude = latitude;
         locationData.longitude = longitude;
 

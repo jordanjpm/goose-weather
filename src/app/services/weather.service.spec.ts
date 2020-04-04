@@ -18,10 +18,10 @@ describe('WeatherService', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-    imports: [
-      HttpClientModule,
-      HttpClientTestingModule
-    ]
+      imports: [
+        HttpClientModule,
+        HttpClientTestingModule
+      ]
     });
 
     httpClient = TestBed.get(HttpClient);
@@ -33,7 +33,7 @@ describe('WeatherService', () => {
     expect(service).toBeTruthy();
   });
 
-  it('retrieves weather', async(inject( [WeatherService], ( weatherService ) => {
+  it('retrieves weather', async(inject([WeatherService], (weatherService) => {
     const locationData: LocationData = {
       latitude: '37.6585',
       longitude: '-77.6526'
@@ -46,7 +46,7 @@ describe('WeatherService', () => {
       .toEqual('https://api.weather.gov/gridpoints/AKQ/36,80/forecast'));
   })));
 
-  it('current conditions open weather map api call successful', async(inject( [WeatherService], ( weatherService ) => {
+  it('current conditions open weather map api call successful', async(inject([WeatherService], (weatherService) => {
     const locationData: LocationData = {
       latitude: '37.6584',
       longitude: '-77.6526'
@@ -65,7 +65,7 @@ describe('WeatherService', () => {
     httpTestingController.verify();
   })));
 
-  it('noaa metatdata call successful', async(inject( [WeatherService], ( weatherService ) => {
+  it('noaa metatdata call successful', async(inject([WeatherService], (weatherService) => {
     const locationData: LocationData = {
       latitude: '37.6585',
       longitude: '-77.6526'
@@ -81,7 +81,7 @@ describe('WeatherService', () => {
     httpTestingController.verify();
   })));
 
-  it('noaa hourly forecast call successful', async(inject( [WeatherService], ( weatherService ) => {
+  it('noaa hourly forecast call successful', async(inject([WeatherService], (weatherService) => {
     const locationData: LocationData = {
       latitude: '37.6585',
       longitude: '-77.6526'
@@ -97,7 +97,7 @@ describe('WeatherService', () => {
     httpTestingController.verify();
   })));
 
-  it('noaa weekly forecast call successful', async(inject( [WeatherService], ( weatherService ) => {
+  it('noaa weekly forecast call successful', async(inject([WeatherService], (weatherService) => {
     const locationData: LocationData = {
       latitude: '37.6585',
       longitude: '-77.6526'

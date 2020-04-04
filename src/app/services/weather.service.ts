@@ -22,7 +22,7 @@ export class WeatherService {
         mergeMap(weeklyForecast => this.getNoaaHourlyForecast(metadata.properties.forecastHourly).pipe(
           mergeMap(hourlyForecast => this.getCurrentWeatherOpenWeatherMapAPI(locationData.latitude, locationData.longitude).pipe(
             map((currentWeather) => {
-              let weatherData: WeatherData = new WeatherData();
+              const weatherData: WeatherData = new WeatherData();
 
               // metadata
               weatherData.currentConditions.latitude = locationData.latitude;

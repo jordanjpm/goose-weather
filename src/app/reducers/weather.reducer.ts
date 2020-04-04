@@ -17,10 +17,9 @@ const weatherReducer = createReducer(
   on(fromWeatherActions.loadWeathers, state => state),
   on(fromWeatherActions.loadWeathersFailure, (state, action) => state),
   on(fromWeatherActions.loadWeathersSuccess, (state, action) => {
-    if (action && action.data) {
-      return { weatherData: action.data };
-    }
-    return state;
+    return {
+      weatherData: action ? action.data : null,
+    };
   })
 );
 

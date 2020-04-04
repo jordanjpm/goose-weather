@@ -18,22 +18,16 @@ const locationReducer = createReducer(
   initialLocationState,
   on(fromLocationActions.loadLocations, state => state),
   on(fromLocationActions.loadLocationsFailure, (state, action) => {
-    if (action && action.error) {
-      return {
-        location: null,
-        error: action.error
-      };
-    }
-    return state;
+    return {
+      error: action ? action.error : null,
+      location: null
+    };
   }),
   on(fromLocationActions.loadLocationsSuccess, (state, action) => {
-    if (action && action.data) {
-      return {
-        location: action.data,
-        error: null
-      };
-    }
-    return state;
+    return {
+      error: null,
+      location: action ? action.data : null
+    };
   })
 );
 

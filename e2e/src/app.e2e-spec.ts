@@ -8,9 +8,8 @@ describe('workspace-project App', () => {
     page = new AppPage();
   });
 
-  it('should display welcome message', () => {
+  it('should display page', () => {
     page.navigateTo();
-    expect(page.getTitleText()).toEqual('Welcome to goose-weather!');
   });
 
   afterEach(async () => {

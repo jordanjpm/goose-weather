@@ -2,8 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { WeatherData } from 'src/app/models/weather-data/weather-data';
-import { AppState } from 'src/app/reducers';
-import { selectWeatherData } from 'src/app/selectors/weather.selector';
+import { AppState } from 'src/app/store/reducers';
+import { selectWeatherData } from 'src/app/store/selectors/weather.selector';
 
 @Component({
   selector: 'app-weekly-forecast',

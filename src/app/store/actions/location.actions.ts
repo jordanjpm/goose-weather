@@ -1,5 +1,5 @@
 import { createAction, props } from '@ngrx/store';
-import { LocationData } from '../models/location-data/location-data';
+import { LocationData } from '../../models/location-data/location-data';
 
 export const loadLocations = createAction(
   '[Location] Load Locations'

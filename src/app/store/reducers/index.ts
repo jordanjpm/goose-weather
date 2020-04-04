@@ -1,5 +1,5 @@
 import { ActionReducerMap, MetaReducer, Action, createFeatureSelector } from '@ngrx/store';
-import { environment } from '../../environments/environment';
+import { environment } from '../../../environments/environment';
 import * as fromLocationReducers from './location.reducer';
 import * as fromWeatherReducers from './weather.reducer';
 

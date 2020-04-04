@@ -1,5 +1,5 @@
 import { Action, createReducer, on } from '@ngrx/store';
-import { LocationData } from '../models/location-data/location-data';
+import { LocationData } from '../../models/location-data/location-data';
 import * as fromLocationActions from '../actions/location.actions';
 
 export const locationFeatureKey = 'location';

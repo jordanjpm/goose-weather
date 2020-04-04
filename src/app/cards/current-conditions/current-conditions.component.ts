@@ -2,8 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { WeatherData } from 'src/app/models/weather-data/weather-data';
 import { Observable } from 'rxjs';
 import { Store, select } from '@ngrx/store';
-import { selectWeatherData } from 'src/app/selectors/weather.selector';
-import { AppState } from 'src/app/reducers';
+import { selectWeatherData } from 'src/app/store/selectors/weather.selector';
+import { AppState } from 'src/app/store/reducers';
 
 @Component({
   selector: 'app-current-conditions',

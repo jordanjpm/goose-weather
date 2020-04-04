@@ -12,10 +12,10 @@ import { City } from '../models/city/city';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { FormControl } from '@angular/forms';
 import { Store, select } from '@ngrx/store';
-import { AppState } from '../reducers';
-import * as fromLocationActions from '../actions/location.actions';
-import { selectLocationError } from '../selectors/location.selector';
-import * as fromWeatherActions from '../actions/weather.actions';
+import { AppState } from '../store/reducers';
+import * as fromLocationActions from '../store/actions/location.actions';
+import { selectLocationError } from '../store/selectors/location.selector';
+import * as fromWeatherActions from '../store/actions/weather.actions';
 
 @Component({
   selector: 'app-weather',

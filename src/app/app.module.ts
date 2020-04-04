@@ -17,11 +17,11 @@ import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
 import { StoreModule } from '@ngrx/store';
-import { reducers, metaReducers } from './reducers';
+import { reducers, metaReducers } from './store/reducers';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { environment } from '../environments/environment';
 import { EffectsModule } from '@ngrx/effects';
-import { WeatherEffects } from './effects/weather.effects';
+import { WeatherEffects } from './store/effects/weather.effects';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({

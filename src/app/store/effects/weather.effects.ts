@@ -6,7 +6,7 @@ import { map, catchError, switchMap, mergeMap, concatMap } from 'rxjs/operators'
 import * as fromLocationActions from '../actions/location.actions';
 import * as fromWeatherActions from '../actions/weather.actions';
 import { AppState } from '../reducers';
-import { WeatherService } from '../services/weather.service';
+import { WeatherService } from '../../services/weather.service';
 
 @Injectable()
 export class WeatherEffects {

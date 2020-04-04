@@ -1,5 +1,5 @@
 import { createAction, props } from '@ngrx/store';
-import { WeatherData } from '../models/weather-data/weather-data';
+import { WeatherData } from '../../models/weather-data/weather-data';
 
 export const loadWeathers = createAction(
   '[Weather] Load Weathers'

@@ -1,14 +1,10 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { WeatherComponent } from './weather/weather.component';
-import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
+import { PageNotFoundComponent } from './core/components/page-not-found/page-not-found.component';
 
 const routes: Routes = [
-  { path: 'weather', component: WeatherComponent },
-  { path: '',
-    redirectTo: '/weather',
-    pathMatch: 'full'
-  },
+  { path: 'weather', loadChildren: () => import('./weather/weather.module').then(m => m.WeatherModule) },
+  { path: '', redirectTo: '/weather', pathMatch: 'full' },
   { path: '**', component: PageNotFoundComponent }
 ];
 

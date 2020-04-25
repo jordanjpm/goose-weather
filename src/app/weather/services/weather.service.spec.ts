@@ -1,11 +1,11 @@
 import { TestBed, async, inject } from '@angular/core/testing';
 import { WeatherService } from './weather.service';
 import { HttpClientModule } from '@angular/common/http';
-import { LocationData } from '../models/location-data/location-data';
+import { LocationData } from '../../models/location-data/location-data';
 import { of } from 'rxjs';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { WeatherData } from '../models/weather-data/weather-data';
+import { WeatherData } from '../../models/weather-data/weather-data';
 import { environment } from 'src/environments/environment';
 
 describe('WeatherService', () => {

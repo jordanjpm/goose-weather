@@ -1,22 +1,22 @@
 import { Component, OnInit } from '@angular/core';
 import { map, startWith } from 'rxjs/operators';
 import { Breakpoints, BreakpointObserver } from '@angular/cdk/layout';
-import { CurrentConditionsComponent } from '../cards/current-conditions/current-conditions.component';
-import { WeatherDiscussionComponent } from '../cards/weather-discussion/weather-discussion.component';
-import { WeeklyForecastComponent } from '../cards/weekly-forecast/weekly-forecast.component';
-import { HourlyForecastComponent } from '../cards/hourly-forecast/hourly-forecast.component';
-import { LocationData } from '../models/location-data/location-data';
+import { CurrentConditionsComponent } from './components/current-conditions/current-conditions.component';
+import { WeatherDiscussionComponent } from './components/weather-discussion/weather-discussion.component';
+import { WeeklyForecastComponent } from './components/weekly-forecast/weekly-forecast.component';
+import { HourlyForecastComponent } from './components/hourly-forecast/hourly-forecast.component';
+import { LocationData } from './models/location-data/location-data';
 import { Observable } from 'rxjs';
 import * as USCities from '../../assets/us_cities.json';
-import { City } from '../models/city/city';
+import { City } from './models/city/city';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { FormControl } from '@angular/forms';
 import { Store, select } from '@ngrx/store';
-import { AppState } from '../store/reducers';
-import * as fromLocationActions from '../store/actions/location.actions';
-import * as fromWeatherActions from '../store/actions/weather.actions';
-import { selectLocationError } from '../store/selectors/location.selector';
-import { selectWeatherError } from '../store/selectors/weather.selector';
+import { WeatherFeatureState } from './store/reducers';
+import * as fromLocationActions from './store/actions/location.actions';
+import * as fromWeatherActions from './store/actions/weather.actions';
+import { selectLocationError } from './store/selectors/location.selector';
+import { selectWeatherError } from './store/selectors/weather.selector';
 
 // constant
 const homeCityName = '(your location)';
@@ -53,7 +53,7 @@ export class WeatherComponent implements OnInit {
     })
   );
 
-  constructor(private breakpointObserver: BreakpointObserver, private store: Store<AppState>) {
+  constructor(private breakpointObserver: BreakpointObserver, private store: Store<WeatherFeatureState>) {
     // desktop view
     this.cardsDesktop = [
       {

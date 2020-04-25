@@ -6,12 +6,12 @@ import { map, catchError, mergeMap } from 'rxjs/operators';
 import { WeatherService } from '../../services/weather.service';
 import * as fromLocationActions from '../actions/location.actions';
 import * as fromWeatherActions from '../actions/weather.actions';
-import { AppState } from '../reducers';
+import { WeatherFeatureState } from '../reducers';
 
 @Injectable()
 export class WeatherEffects {
 
-  constructor(private actions$: Actions, private store: Store<AppState>, private weatherService: WeatherService) { }
+  constructor(private actions$: Actions, private store: Store<WeatherFeatureState>, private weatherService: WeatherService) { }
 
   loadWeathers$ = createEffect(() => {
     return this.actions$.pipe(

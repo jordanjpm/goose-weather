@@ -86,7 +86,6 @@ mat-spinner {
 .toolbar-title > span {
   display: flex;
   flex-shrink: 2;
-  /* justify-content: center; */
   align-items: center;
   margin: 0;
   height: 1.25em;

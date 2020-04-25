@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { environment } from '../../environments/environment';
+import { environment } from '../../../environments/environment';
 import { WeatherData } from '../models/weather-data/weather-data';
 import { WeeklyForecast } from '../models/weekly-forecast/weekly-forecast';
 import { HourlyForecast } from '../models/hourly-forecast/hourly-forecast';
